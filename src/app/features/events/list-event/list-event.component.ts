@@ -1,12 +1,12 @@
 import { Component, EventEmitter } from '@angular/core';
-import { Event } from '../../models/event';
+import { Event } from '../../../models/event';
 
 @Component({
   selector: 'app-list-event',
   templateUrl: './list-event.component.html',
-  styleUrl: './list-event.component.css'
+  styleUrls: ['./list-event.component.css']
 })
-export class LidtEventComponent {
+export class ListEventComponent {
   searchItem =""
   listevent: Event[] = [
   {
