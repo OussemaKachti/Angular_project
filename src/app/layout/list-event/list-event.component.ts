@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter } from '@angular/core';
 import { Event } from '../../models/event';
 
 @Component({
@@ -7,7 +7,7 @@ import { Event } from '../../models/event';
   styleUrl: './list-event.component.css'
 })
 export class LidtEventComponent {
-
+  searchItem =""
   listevent: Event[] = [
   {
     id: 1,
@@ -73,6 +73,11 @@ isExpired (event: Event) {
   
 }
 
+filter()
+{
+return this.listevent.filter(eventItem=>eventItem.titre.toLowerCase().includes(this.searchItem.toLowerCase()));
+// eventItem.lieu.toLowerCase().includes(this.searchItem.toLowerCase())
+}
 
 
 

@@ -5,6 +5,7 @@ import { LidtEventComponent } from './layout/list-event/list-event.component';
 import { HomeComponent } from './layout/home/home.component';
 
 const routes: Routes = [
+    {path:'' , redirectTo:"home",pathMatch:"full"},
   {path:'home' , component:HomeComponent},
   {path:'list' , component:LidtEventComponent,children:[
       {path:'test' , component:HomeComponent}
