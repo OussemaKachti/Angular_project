@@ -22,15 +22,20 @@
                     <p class="fw-bold">{{event.prix}}</p>
                     <p>{{event.nbrLikes}}</p>
 
-                    <!-- Bouton Like -->
-                    <button class="btn btn-sm btn-primary"  (click)="incrLikes(event)" [disabled]="isExpired(event)">
-                        👍 Like
-                    </button>
-
-                         <button class="btn btn-sm btn-primary"  (click)="buyTicket(event)" [disabled]="event.nbPlaces==0">
-                        Buy Ticket
-                    </button>
-                    <span class="ms-2"></span>
+                    <!-- Boutons d'action -->
+                    <div class="d-flex gap-2 flex-wrap">
+                        <button class="btn btn-sm btn-primary" (click)="incrLikes(event)" [disabled]="isExpired(event)">
+                            👍 Like
+                        </button>
+                        
+                        <button class="btn btn-sm btn-success" (click)="buyTicket(event)" [disabled]="event.nbPlaces==0">
+                            Buy Ticket
+                        </button>
+                        
+                        <button class="btn btn-sm btn-outline-primary" [routerLink]="['./', event.id]">
+                            More Details
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>

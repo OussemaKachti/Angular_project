@@ -1,0 +1,65 @@
+<div *ngIf="eventDetails" class="container py-4">
+  <div class="row">
+    <div class="col-12">
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a routerLink="/events">Événements</a></li>
+          <li class="breadcrumb-item active">{{ eventDetails.titre }}</li>
+        </ol>
+      </nav>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-8">
+      <div class="card">
+        <img [src]="eventDetails.imageUrl" class="card-img-top" [alt]="eventDetails.titre" style="height: 300px; object-fit: cover;">
+        <div class="card-body">
+          <h1 class="card-title">{{ eventDetails.titre }}</h1>
+          <p class="card-text">{{ eventDetails.description }}</p>
+          
+          <div class="row mt-4">
+            <div class="col-md-6">
+              <h5>Informations</h5>
+              <p><strong>Date :</strong> {{ eventDetails.date | date:'dd/MM/yyyy HH:mm' }}</p>
+              <p><strong>Lieu :</strong> {{ eventDetails.lieu }}</p>
+              <p><strong>Prix :</strong> {{ eventDetails.prix }}€</p>
+            </div>
+            <div class="col-md-6">
+              <h5>Détails</h5>
+              <p><strong>Places disponibles :</strong> {{ eventDetails.nbPlaces }}</p>
+              <p><strong>Likes :</strong> {{ eventDetails.nbrLikes }}</p>
+              <p><strong>Organisateur ID :</strong> {{ eventDetails.organisateurId }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="col-md-4">
+      <div class="card">
+        <div class="card-header">
+          <h5>Actions</h5>
+        </div>
+        <div class="card-body">
+          <div class="d-grid gap-2">
+            <button class="btn btn-primary" [disabled]="eventDetails.nbPlaces === 0">
+              Réserver
+            </button>
+            <button class="btn btn-outline-secondary">
+              Partager
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="!eventDetails" class="container py-5">
+  <div class="text-center">
+    <h2>Événement non trouvé</h2>
+    <p>L'événement que vous recherchez n'existe pas.</p>
+    <a routerLink="/events" class="btn btn-primary">Retour aux événements</a>
+  </div>
+</div>
