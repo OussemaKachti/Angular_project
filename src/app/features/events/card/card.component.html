@@ -1,0 +1,30 @@
+ <div class="card h-100 shadow-sm">
+                <img src={{event.imageUrl}}
+                     class="card-img-top img-fluid"
+                     style="height: 200px; object-fit: cover;">
+
+                <div class="card-body">
+                    <h5 class="card-title">{{event.titre |uppercase}}</h5>
+                    <p class="text-muted">{{event.lieu}}</p>
+                    <p class="text-info"><strong>Date:</strong> {{event.date | dateFormat}}</p>
+                    <p>{{event.description}}</p>
+                    <p>{{event.nbPlaces}}</p>
+                    <p class="fw-bold">{{event.prix}}</p>
+                    <p>{{event.nbrLikes}}</p>
+
+                    <!-- Boutons d'action -->
+                    <div class="d-flex gap-2 flex-wrap">
+                        <button class="btn btn-sm btn-primary" (click)="incrLikes(event)" [disabled]="isExpired(event)">
+                            👍 Like
+                        </button>
+                        
+                        <button class="btn btn-sm btn-success" (click)="buyTicket(event)" [disabled]="event.nbPlaces==0">
+                            Buy Ticket
+                        </button>
+                        
+                        <button class="btn btn-sm btn-outline-primary" [routerLink]="['./', event.id]">
+                            More Details
+                        </button>
+                    </div>
+                </div>
+            </div>

@@ -7,19 +7,23 @@ import { EventsComponent } from './events.component';
 import { ListEventComponent } from './list-event/list-event.component';
 import { FormsModule } from '@angular/forms';
 import { EventDetailsComponent } from './event-details/event-details.component';
+import { CardComponent } from './card/card.component';
+import { SharedModule } from '../../shared/shared.module';
 
 
 @NgModule({
   declarations: [
     EventsComponent,
     ListEventComponent,
-    EventDetailsComponent
+    EventDetailsComponent,
+    CardComponent
   ],
   imports: [
     CommonModule,
     EventsRoutingModule,
     FormsModule,
-    RouterModule
+    RouterModule,
+    SharedModule
   ]
 })
 export class EventsModule { }

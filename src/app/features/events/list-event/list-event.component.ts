@@ -79,6 +79,14 @@ return this.listevent.filter(eventItem=>eventItem.titre.toLowerCase().includes(t
 // eventItem.lieu.toLowerCase().includes(this.searchItem.toLowerCase())
 }
 
+onLikeNotification(event: Event) {
+  console.log('Like notification for event:', event.titre);
+}
+
+onBuyNotification(event: Event) {
+  console.log('Buy notification for event:', event.titre);
+}
+
 
 
 
