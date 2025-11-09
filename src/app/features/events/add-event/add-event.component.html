@@ -1,0 +1,57 @@
+<form [formGroup]="eventForm" (submit)="onSubmit()" >
+    <div class="mb-3">
+      <label for="title" class="form-label">Title</label>
+      <input
+        type="text"
+        id="title"
+        class="form-control"
+        formControlName="title"
+      />
+    </div>
+  
+   <div *ngIf="title?.invalid && title?.touched">
+      <span *ngIf="title?.hasError('required')" style="color:red">
+        This field is required
+      </span><br />
+      <span *ngIf="title?.hasError('minlength')" style="color:red">
+        This field must contain at least 5 characters
+      </span><br />
+      <span *ngIf="title?.hasError('pattern')" style="color:red">
+        This field must respect the pattern (letters and spaces only)
+      </span>
+    </div>
+  
+    <div class="mb-3">
+      <label for="description" class="form-label">Description</label>
+      <textarea id="description" class="form-control" formControlName="description"></textarea>
+    </div>
+  
+    <div class="mb-3">
+      <label for="date" class="form-label">Date</label>
+      <input type="date" id="date" class="form-control" formControlName="date" />
+    </div>
+  
+    <div class="mb-3">
+      <label for="lieu" class="form-label">Lieu</label>
+      <input type="text" id="lieu" class="form-control" formControlName="lieu" />
+    </div>
+  
+    <div class="mb-3">
+      <label for="prix" class="form-label">Prix</label>
+      <input type="text" id="prix" class="form-control" formControlName="prix" />
+    </div>
+  
+    <div class="mb-3">
+      <label for="nbPlaces" class="form-label">Nombre de places</label>
+      <input type="number" id="nbPlaces" class="form-control" formControlName="nbPlaces" />
+    </div>
+  
+    <div class="mb-3">
+      <label for="imageUrl" class="form-label">Image (URL)</label>
+      <input type="text" id="imageUrl" class="form-control" formControlName="imageUrl" />
+    </div>
+  
+    <button type="submit" class="btn btn-primary" [disabled]="eventForm.invalid">
+      Submit 
+    </button>
+  </form>
