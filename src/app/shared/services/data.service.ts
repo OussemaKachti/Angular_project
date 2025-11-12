@@ -65,4 +65,18 @@ export class DataService {
   getEventList(): Event[] {
     return this.listevent;
   }
+
+  addEvent(event: Event): Event {
+    const nextId =
+      this.listevent.length > 0
+        ? Math.max(...this.listevent.map(evt => evt.id)) + 1
+        : 1;
+    const newEvent: Event = {
+      ...event,
+      id: nextId
+    };
+
+    this.listevent.push(newEvent);
+    return newEvent;
+  }
 }

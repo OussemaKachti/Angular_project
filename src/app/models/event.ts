@@ -1,3 +1,10 @@
+export interface Address {
+  street: string;
+  city: string;
+  governorate: string;
+  zipcode: string;
+}
+
 export interface Event {
 
     id:number;
@@ -10,6 +17,8 @@ export interface Event {
     imageUrl:string;
     nbPlaces:number;
     nbrLikes:number;
+    domaines?: string[];
+    detailedAddress?: Address;
 
 
 } 

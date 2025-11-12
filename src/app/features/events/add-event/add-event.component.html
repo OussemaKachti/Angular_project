@@ -51,6 +51,89 @@
       <input type="text" id="imageUrl" class="form-control" formControlName="imageUrl" />
     </div>
   
+    <div formGroupName="detailedAddress" class="mb-4">
+      <h5 class="mb-3">Adresse détaillée</h5>
+      <div class="mb-3">
+        <label for="street" class="form-label">Avenue</label>
+        <input
+          type="text"
+          id="street"
+          class="form-control"
+          formControlName="street"
+          placeholder="Avenue"
+        />
+        <div class="text-danger mt-1" *ngIf="detailedAddress.get('street')?.invalid && detailedAddress.get('street')?.touched">
+          <span *ngIf="detailedAddress.get('street')?.hasError('required')">L'avenue est requise.</span>
+          <span *ngIf="detailedAddress.get('street')?.hasError('minlength')">Minimum 3 caractères.</span>
+        </div>
+      </div>
+
+      <div class="mb-3">
+        <label for="city" class="form-label">Ville</label>
+        <input
+          type="text"
+          id="city"
+          class="form-control"
+          formControlName="city"
+          placeholder="Ville"
+        />
+        <div class="text-danger mt-1" *ngIf="detailedAddress.get('city')?.invalid && detailedAddress.get('city')?.touched">
+          <span *ngIf="detailedAddress.get('city')?.hasError('required')">La ville est requise.</span>
+          <span *ngIf="detailedAddress.get('city')?.hasError('minlength')">Minimum 2 caractères.</span>
+        </div>
+      </div>
+
+      <div class="mb-3">
+        <label for="governorate" class="form-label">Gouvernorat</label>
+        <input
+          type="text"
+          id="governorate"
+          class="form-control"
+          formControlName="governorate"
+          placeholder="Gouvernorat"
+        />
+        <div class="text-danger mt-1" *ngIf="detailedAddress.get('governorate')?.invalid && detailedAddress.get('governorate')?.touched">
+          <span *ngIf="detailedAddress.get('governorate')?.hasError('required')">Le gouvernorat est requis.</span>
+          <span *ngIf="detailedAddress.get('governorate')?.hasError('minlength')">Minimum 2 caractères.</span>
+        </div>
+      </div>
+
+      <div class="mb-3">
+        <label for="zipcode" class="form-label">Code postal</label>
+        <input
+          type="text"
+          id="zipcode"
+          class="form-control"
+          formControlName="zipcode"
+          placeholder="Code postal"
+        />
+        <div class="text-danger mt-1" *ngIf="detailedAddress.get('zipcode')?.invalid && detailedAddress.get('zipcode')?.touched">
+          <span *ngIf="detailedAddress.get('zipcode')?.hasError('required')">Le code postal est requis.</span>
+          <span *ngIf="detailedAddress.get('zipcode')?.hasError('pattern')">Le code postal doit contenir 4 chiffres.</span>
+        </div>
+      </div>
+    </div>
+
+    <div formArrayName="domaines" class="mb-3">
+      <label class="form-label d-block">Domaines</label>
+      <div *ngFor="let domainCtrl of domaines.controls; let i = index" class="mb-2">
+        <input
+          type="text"
+          class="form-control"
+          [formControlName]="i"
+          placeholder="Ex: Musique"
+        />
+        <div class="text-danger mt-1" *ngIf="domainCtrl.invalid && domainCtrl.touched">
+          <span *ngIf="domainCtrl.hasError('required')">Le domaine est requis.</span>
+          <span *ngIf="domainCtrl.hasError('minlength')">Minimum 3 caractères.</span>
+          <span *ngIf="domainCtrl.hasError('maxlength')">Maximum 20 caractères.</span>
+        </div>
+      </div>
+      <button type="button" class="btn btn-outline-primary btn-sm" (click)="addDomain()">
+        + Ajouter un domaine
+      </button>
+    </div>
+
     <button type="submit" class="btn btn-primary" [disabled]="eventForm.invalid">
       Submit 
     </button>
