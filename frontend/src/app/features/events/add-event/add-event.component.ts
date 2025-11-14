@@ -111,7 +111,15 @@ export class AddEventComponent implements OnInit {
       detailedAddress: formValue.detailedAddress
     };
 
-    const savedEvent = this.dataService.addEvent(newEvent);
-    this.router.navigate(['/events', savedEvent.id]);
+    this.dataService.addEvent(newEvent).subscribe({
+      next: (savedEvent) => {
+        console.log('Événement créé:', savedEvent);
+        this.router.navigate(['/events', savedEvent.id]);
+      },
+      error: (error) => {
+        console.error('Erreur lors de la création de l\'événement:', error);
+        alert('Erreur lors de la création de l\'événement. Veuillez réessayer.');
+      }
+    });
   }
 }

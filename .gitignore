@@ -1,5 +1,9 @@
 # See https://docs.github.com/get-started/getting-started-with-git/ignoring-files for more about ignoring files.
 
+# ============================================
+# ANGULAR / FRONTEND
+# ============================================
+
 # Compiled output
 /dist
 /tmp
@@ -8,11 +12,60 @@
 
 # Node
 /node_modules
+frontend/node_modules/
 npm-debug.log
 yarn-error.log
 
+# Angular
+/.angular/cache
+frontend/.angular/
+frontend/dist/
+.sass-cache/
+/connect.lock
+/coverage
+/libpeerconnection.log
+testem.log
+/typings
+
+# ============================================
+# SPRING BOOT / BACKEND
+# ============================================
+
+# Maven
+backend/target/
+backend/pom.xml.tag
+backend/pom.xml.releaseBackup
+backend/pom.xml.versionsBackup
+backend/pom.xml.next
+backend/release.properties
+backend/dependency-reduced-pom.xml
+backend/buildNumber.properties
+backend/.mvn/timing.properties
+backend/.mvn/wrapper/maven-wrapper.jar
+
+# Compiled classes
+backend/**/*.class
+
+# Logs
+backend/*.log
+backend/logs/
+
+# Spring Boot
+backend/.springBeans
+# Note: HELP.md peut être versionné (documentation Spring Boot)
+
+# ============================================
 # IDEs and editors
+# ============================================
+
+# IntelliJ IDEA
 .idea/
+*.iml
+*.iws
+*.ipr
+out/
+
+# Eclipse
 .project
 .classpath
 .c9/
@@ -28,15 +81,33 @@ yarn-error.log
 !.vscode/extensions.json
 .history/*
 
-# Miscellaneous
-/.angular/cache
-.sass-cache/
-/connect.lock
-/coverage
-/libpeerconnection.log
-testem.log
-/typings
+# NetBeans
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
 
+# ============================================
 # System files
+# ============================================
+
 .DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
 Thumbs.db
+
+# ============================================
+# Environment and secrets
+# ============================================
+
+.env
+.env.local
+.env.*.local
+*.key
+*.pem
+application-local.properties
+application-dev.properties
