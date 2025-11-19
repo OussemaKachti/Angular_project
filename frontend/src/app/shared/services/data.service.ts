@@ -87,6 +87,13 @@ export class DataService {
     );
   }
 
+  // Participer à un événement
+  participate(eventId: number, payload: { email: string; seats: number }): Observable<any> {
+    return this.http.post(`${this.apiUrl}/${eventId}/participations`, payload).pipe(
+      catchError(this.handleError)
+    );
+  }
+
   // Mapper l'événement reçu du backend vers le format Angular
   private mapEvent(event: any): Event {
     return {
@@ -110,4 +117,6 @@ export class DataService {
     console.error(errorMessage);
     return throwError(() => new Error(errorMessage));
   }
+
+  
 }

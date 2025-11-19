@@ -1,0 +1,85 @@
+<ng-container *ngIf="!loading; else loadingState">
+  <section class="participation-wrapper container py-4" *ngIf="event; else errorState">
+    <h2 class="mb-1">Participer à {{ event?.titre }}</h2>
+    <p class="text-muted mb-4">
+      {{ event?.lieu }} • {{ event?.date | date:'fullDate' }} • Prix unitaire :
+      <strong>{{ event?.prix | number:'1.0-2' }} TND</strong>
+    </p>
+
+    <form #participationForm="ngForm"
+          (ngSubmit)="onSubmit(participationForm)"
+          novalidate
+          class="card shadow-sm p-4">
+
+      <div *ngIf="successMessage" class="alert alert-success">{{ successMessage }}</div>
+      <div *ngIf="errorMessage" class="alert alert-danger">{{ errorMessage }}</div>
+
+    <div class="mb-3">
+      <label for="email" class="form-label">Adresse e-mail</label>
+      <input type="email"
+             id="email"
+             name="email"
+             class="form-control"
+             required
+             email
+             [(ngModel)]="email"
+             #emailCtrl="ngModel">
+      <div class="text-danger small mt-1" *ngIf="emailCtrl.invalid && emailCtrl.touched">
+        <span *ngIf="emailCtrl.errors?.['required']">L'adresse e-mail est obligatoire.</span>
+        <span *ngIf="emailCtrl.errors?.['email']">Format d'e-mail invalide.</span>
+      </div>
+    </div>
+
+    <div class="mb-3">
+      <label for="seats" class="form-label">Nombre de places</label>
+      <input type="number"
+             id="seats"
+             name="seats"
+             class="form-control"
+             min="1"
+             required
+             [(ngModel)]="seats"
+             (ngModelChange)="updateTotal()"
+             #seatsCtrl="ngModel">
+      <div class="text-danger small mt-1" *ngIf="seatsCtrl.invalid && seatsCtrl.touched">
+        <span *ngIf="seatsCtrl.errors?.['required']">Le nombre de places est obligatoire.</span>
+        <span *ngIf="seatsCtrl.errors?.['min']">Au moins 1 place est requise.</span>
+      </div>
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Prix total</label>
+      <input class="form-control"
+             [value]="totalPrice | number : '1.0-2'"
+             readonly>
+      <div class="form-text">Prix unitaire : {{ event?.prix | number:'1.0-2' }} TND</div>
+    </div>
+
+    <button type="submit"
+            class="btn btn-primary"
+            [disabled]="participationForm.invalid || submitting">
+      {{ submitting ? 'Enregistrement...' : 'Soumettre' }}
+    </button>
+
+    <div class="alert alert-info mt-3"
+         *ngIf="seatsCtrl.valid && seatsCtrl.touched">
+      Prix total: <strong>{{ totalPrice | number:'1.0-2' }} TND</strong>
+    </div>
+  </form>
+  </section>
+</ng-container>
+
+<ng-template #loadingState>
+  <div class="container py-4">
+    <div class="alert alert-info">Chargement des informations de l’événement…</div>
+  </div>
+</ng-template>
+
+<ng-template #errorState>
+  <div class="container py-4">
+    <div class="alert alert-danger">
+      {{ errorMessage || 'Événement introuvable.' }}
+    </div>
+  </div>
+</ng-template>
+

@@ -21,9 +21,14 @@
                         <button class="btn btn-sm btn-success" (click)="buyTicket(event)" [disabled]="event.nbPlaces==0">
                             Buy Ticket
                         </button>
-                        
                         <button class="btn btn-sm btn-outline-primary" [routerLink]="['./', event.id]">
                             More Details
+                        </button>
+
+                        <button class="btn btn-sm btn-warning text-white"
+                                (click)="participate(event)"
+                                [disabled]="isExpired(event)">
+                            Participer
                         </button>
                     </div>
                 </div>
