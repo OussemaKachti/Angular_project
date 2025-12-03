@@ -11,6 +11,8 @@ import { CardComponent } from './card/card.component';
 import { SharedModule } from '../../shared/shared.module';
 import { AddEventComponent } from './add-event/add-event.component';
 import { ParticipationFormComponent } from './participation-form/participation-form.component';
+import { MyEventsComponent } from './my-events/my-events.component';
+import { MyParticipationsComponent } from './my-participations/my-participations.component';
 
 
 @NgModule({
@@ -20,7 +22,9 @@ import { ParticipationFormComponent } from './participation-form/participation-f
     EventDetailsComponent,
     CardComponent,
     AddEventComponent,
-    ParticipationFormComponent
+    ParticipationFormComponent,
+    MyEventsComponent,
+    MyParticipationsComponent
   ],
   imports: [
     CommonModule,

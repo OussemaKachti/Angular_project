@@ -1,4 +1,7 @@
-<form [formGroup]="eventForm" (submit)="onSubmit()" >
+<div class="container py-4">
+  <h2 class="mb-4">{{ isEditMode ? 'Modifier un événement' : 'Ajouter un événement' }}</h2>
+  
+  <form [formGroup]="eventForm" (submit)="onSubmit()" >
     <div class="mb-3">
       <label for="title" class="form-label">Title</label>
       <input
@@ -135,6 +138,10 @@
     </div>
 
     <button type="submit" class="btn btn-primary" [disabled]="eventForm.invalid">
-      Submit 
+      {{ isEditMode ? 'Modifier' : 'Soumettre' }}
+    </button>
+    <button type="button" class="btn btn-secondary ms-2" routerLink="/events/my-events">
+      Annuler
     </button>
   </form>
+</div>

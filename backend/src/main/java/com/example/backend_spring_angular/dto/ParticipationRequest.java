@@ -7,6 +7,7 @@ import jakarta.validation.constraints.NotNull;
 
 public record ParticipationRequest(
         @Email @NotBlank String email,
-        @NotNull @Min(1) Integer seats
+        @NotNull @Min(1) Integer seats,
+        @NotNull Long userId
 ) {}
 

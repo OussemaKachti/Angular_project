@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { NgForm } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { DataService } from '../../../shared/services/data.service';
@@ -21,7 +21,11 @@ export class ParticipationFormComponent implements OnInit, OnDestroy {
   successMessage = '';
   private subscription?: Subscription;
 
-  constructor(private route: ActivatedRoute, private dataService: DataService) {}
+  constructor(
+    private route: ActivatedRoute, 
+    private dataService: DataService,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
     this.subscription = this.route.paramMap.subscribe(params => {
@@ -62,13 +66,33 @@ export class ParticipationFormComponent implements OnInit, OnDestroy {
     this.totalPrice = (isNaN(quantity) ? 0 : quantity) * unitPrice;
   }
 
+  private readonly USER_ID = 1;
+
   onSubmit(form: NgForm): void {
+    console.log('onSubmit called');
+    console.log('Form valid:', form.valid);
+    console.log('Form errors:', form.errors);
+    console.log('Email:', this.email);
+    console.log('Seats:', this.seats);
+    console.log('Event:', this.event);
+
     if (form.invalid) {
+      console.log('Form is invalid, marking all as touched');
       form.control.markAllAsTouched();
+      Object.keys(form.controls).forEach(key => {
+        const control = form.controls[key];
+        console.log(`Control ${key}:`, {
+          valid: control.valid,
+          errors: control.errors,
+          touched: control.touched
+        });
+      });
+      this.errorMessage = 'Veuillez remplir tous les champs correctement.';
       return;
     }
 
     if (!this.event?.id) {
+      console.error('Event ID is missing');
       this.errorMessage = 'Événement introuvable.';
       return;
     }
@@ -77,20 +101,55 @@ export class ParticipationFormComponent implements OnInit, OnDestroy {
     this.successMessage = '';
     this.errorMessage = '';
 
-    this.dataService.participate(this.event.id, {
+    const participationData = {
       email: this.email,
-      seats: this.seats
-    }).subscribe({
-      next: () => {
+      seats: this.seats,
+      userId: this.USER_ID
+    };
+
+    console.log('Sending participation request:', {
+      eventId: this.event.id,
+      ...participationData
+    });
+
+    this.dataService.addParticipationToBackend(
+      this.event.id,
+      this.email,
+      this.seats,
+      this.USER_ID
+    ).subscribe({
+      next: (response) => {
+        console.log('Participation created successfully:', response);
         this.successMessage = 'Participation enregistrée avec succès !';
-        form.resetForm({ email: '', seats: 1 });
-        this.updateTotal();
-        this.fetchEvent(this.event!.id); // refresh available seats
+        setTimeout(() => {
+          this.router.navigate(['/events/my-participations']);
+        }, 1500);
       },
       error: err => {
-        this.errorMessage = err.message || 'Impossible d’enregistrer la participation.';
+        console.error('Error creating participation:', err);
+        console.error('Error details:', {
+          status: err.status,
+          statusText: err.statusText,
+          error: err.error,
+          message: err.message,
+          url: err.url
+        });
+        let errorMsg = "Impossible d'enregistrer la participation.";
+        if (err.error) {
+          if (typeof err.error === 'string') {
+            errorMsg = err.error;
+          } else if (err.error.message) {
+            errorMsg = err.error.message;
+          }
+        } else if (err.message) {
+          errorMsg = err.message;
+        }
+        this.errorMessage = errorMsg;
+        this.submitting = false;
+        alert('Erreur: ' + errorMsg + '\n\nVérifiez la console pour plus de détails.');
       },
       complete: () => {
+        console.log('Request completed');
         this.submitting = false;
       }
     });

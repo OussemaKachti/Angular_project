@@ -44,5 +44,8 @@ public class Participation {
     @JoinColumn(name = "event_id")
     @JsonIgnore
     private Event event;
+
+    @Column(nullable = false)
+    private Long userId;
 }
 

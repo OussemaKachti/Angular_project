@@ -1,9 +1,9 @@
 <ng-container *ngIf="!loading; else loadingState">
   <section class="participation-wrapper container py-4" *ngIf="event; else errorState">
-    <h2 class="mb-1">Participer à {{ event?.titre }}</h2>
+    <h2 class="mb-1">Participer à {{ event.titre }}</h2>
     <p class="text-muted mb-4">
-      {{ event?.lieu }} • {{ event?.date | date:'fullDate' }} • Prix unitaire :
-      <strong>{{ event?.prix | number:'1.0-2' }} TND</strong>
+      {{ event.lieu }} • {{ event.date | date:'fullDate' }} • Prix unitaire :
+      <strong>{{ event.prix | number:'1.0-2' }} TND</strong>
     </p>
 
     <form #participationForm="ngForm"
@@ -52,14 +52,19 @@
       <input class="form-control"
              [value]="totalPrice | number : '1.0-2'"
              readonly>
-      <div class="form-text">Prix unitaire : {{ event?.prix | number:'1.0-2' }} TND</div>
+      <div class="form-text">Prix unitaire : {{ event.prix | number:'1.0-2' }} TND</div>
     </div>
 
     <button type="submit"
             class="btn btn-primary"
-            [disabled]="participationForm.invalid || submitting">
+            [disabled]="submitting">
       {{ submitting ? 'Enregistrement...' : 'Soumettre' }}
     </button>
+    
+    <!-- Message d'aide pour la validation -->
+    <div class="alert alert-warning mt-3" *ngIf="participationForm.invalid && participationForm.touched">
+      <small>Veuillez remplir tous les champs correctement avant de soumettre.</small>
+    </div>
 
     <div class="alert alert-info mt-3"
          *ngIf="seatsCtrl.valid && seatsCtrl.touched">

@@ -58,8 +58,21 @@ export class DataService {
 
   // Supprimer un événement
   deleteEvent(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/${id}`).pipe(
-      catchError(this.handleError)
+    const url = `${this.apiUrl}/${id}`;
+    console.log('DataService: Deleting event at URL:', url);
+    console.log('DataService: Event ID:', id);
+    
+    return this.http.delete<void>(url).pipe(
+      catchError((error) => {
+        console.error('DataService: Error deleting event:', error);
+        console.error('DataService: Error details:', {
+          status: error.status,
+          statusText: error.statusText,
+          error: error.error,
+          url: error.url
+        });
+        return this.handleError(error);
+      })
     );
   }
 
@@ -88,9 +101,85 @@ export class DataService {
   }
 
   // Participer à un événement
-  participate(eventId: number, payload: { email: string; seats: number }): Observable<any> {
+  participate(eventId: number, payload: { email: string; seats: number; userId: number }): Observable<any> {
     return this.http.post(`${this.apiUrl}/${eventId}/participations`, payload).pipe(
       catchError(this.handleError)
+    );
+  }
+
+  // Récupérer les événements par organisateur
+  getEventsByOrganizerId(organisateurId: number): Observable<Event[]> {
+    return this.http.get<Event[]>(`${this.apiUrl}/organizer/${organisateurId}`).pipe(
+      map(events => events.map(event => this.mapEvent(event))),
+      catchError(this.handleError)
+    );
+  }
+
+  // Ajouter un événement au backend (alias pour addEvent)
+  addEventToBackend(event: Event): Observable<Event> {
+    return this.addEvent(event);
+  }
+
+  // Récupérer les participations par userId
+  getParticipationsByUserId(userId: number): Observable<any[]> {
+    const url = `${environment.apiUrl}/participations/user/${userId}`;
+    console.log('DataService: Getting participations from URL:', url);
+    
+    return this.http.get<any[]>(url).pipe(
+      map(participations => {
+        console.log('DataService: Received participations:', participations);
+        participations.forEach((p, index) => {
+          console.log(`DataService: Participation ${index}:`, {
+            id: p.id,
+            email: p.email,
+            eventId: p.event?.id,
+            fullObject: p
+          });
+        });
+        return participations;
+      }),
+      catchError(this.handleError)
+    );
+  }
+
+  // Ajouter une participation au backend
+  addParticipationToBackend(eventId: number, email: string, seats: number, userId: number): Observable<any> {
+    const payload = { email, seats, userId };
+    const url = `${this.apiUrl}/${eventId}/participations`;
+    console.log('DataService: Sending participation request to:', url);
+    console.log('DataService: Full URL:', url);
+    console.log('DataService: Payload:', JSON.stringify(payload));
+    console.log('DataService: Environment API URL:', environment.apiUrl);
+    
+    return this.http.post(url, payload, {
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    }).pipe(
+      catchError((error) => {
+        console.error('DataService: HTTP Error caught:', error);
+        return this.handleError(error);
+      })
+    );
+  }
+
+  // Supprimer une participation
+  deleteParticipation(participationId: number): Observable<void> {
+    const url = `${environment.apiUrl}/participations/${participationId}`;
+    console.log('DataService: Deleting participation at URL:', url);
+    console.log('DataService: Participation ID:', participationId);
+    
+    return this.http.delete<void>(url).pipe(
+      catchError((error) => {
+        console.error('DataService: Error deleting participation:', error);
+        console.error('DataService: Error details:', {
+          status: error.status,
+          statusText: error.statusText,
+          error: error.error,
+          url: error.url
+        });
+        return this.handleError(error);
+      })
     );
   }
 
@@ -111,10 +200,23 @@ export class DataService {
       errorMessage = `Erreur: ${error.error.message}`;
     } else {
       // Erreur côté serveur
-      errorMessage = `Code d'erreur: ${error.status}\nMessage: ${error.message}`;
+      const status = error.status;
+      switch (status) {
+        case 400:
+          errorMessage = error.error?.message || 'Requête invalide. Veuillez vérifier vos données.';
+          break;
+        case 404:
+          errorMessage = 'Ressource introuvable.';
+          break;
+        case 500:
+          errorMessage = 'Erreur serveur. Veuillez réessayer plus tard.';
+          break;
+        default:
+          errorMessage = error.error?.message || `Erreur ${status}: ${error.message}`;
+      }
     }
     
-    console.error(errorMessage);
+    console.error('Erreur HTTP:', error);
     return throwError(() => new Error(errorMessage));
   }
 

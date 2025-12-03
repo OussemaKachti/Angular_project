@@ -1,9 +1,12 @@
 package com.example.backend_spring_angular.service;
 
 import com.example.backend_spring_angular.entity.Event;
+import com.example.backend_spring_angular.entity.Participation;
 import com.example.backend_spring_angular.repository.EventRepository;
+import com.example.backend_spring_angular.repository.ParticipationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -13,6 +16,9 @@ public class EventService {
 
     @Autowired
     private EventRepository eventRepository;
+    
+    @Autowired
+    private ParticipationRepository participationRepository;
 
     public List<Event> getAllEvents() {
         return eventRepository.findAll();
@@ -46,8 +52,30 @@ public class EventService {
         return eventRepository.save(event);
     }
 
+    @Transactional
     public void deleteEvent(Long id) {
+        System.out.println("EventService: Attempting to delete event with id: " + id);
+        
+        // Vérifier si l'événement existe
+        Event event = eventRepository.findById(id)
+                .orElseThrow(() -> {
+                    System.err.println("EventService: Event not found with id: " + id);
+                    return new RuntimeException("Event not found with id: " + id);
+                });
+        
+        System.out.println("EventService: Found event - " + event.getTitre());
+        
+        // Supprimer d'abord toutes les participations liées à cet événement
+        List<Participation> participations = participationRepository.findByEventId(id);
+        if (!participations.isEmpty()) {
+            System.out.println("EventService: Found " + participations.size() + " participations to delete");
+            participationRepository.deleteAll(participations);
+            System.out.println("EventService: All participations deleted");
+        }
+        
+        // Supprimer l'événement
         eventRepository.deleteById(id);
+        System.out.println("EventService: Event " + id + " deleted successfully");
     }
 
     public List<Event> searchEvents(String searchTerm) {
@@ -69,5 +97,9 @@ public class EventService {
             return eventRepository.save(event);
         }
         throw new RuntimeException("No places available");
+    }
+
+    public List<Event> getEventsByOrganizerId(Long organisateurId) {
+        return eventRepository.findByOrganisateurId(organisateurId);
     }
 }

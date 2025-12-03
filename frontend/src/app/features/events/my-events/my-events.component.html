@@ -1,0 +1,54 @@
+<div class="container py-4">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h2>Mes Événements</h2>
+    <button class="btn btn-primary" routerLink="add">
+      + Ajouter un événement
+    </button>
+  </div>
+
+  <div *ngIf="loading" class="text-center py-5">
+    <div class="spinner-border" role="status">
+      <span class="visually-hidden">Chargement...</span>
+    </div>
+  </div>
+
+  <div *ngIf="!loading && events.length === 0" class="alert alert-info">
+    Vous n'avez pas encore créé d'événements.
+  </div>
+
+  <div class="row g-3" *ngIf="!loading && events.length > 0">
+    <div class="col-md-4" *ngFor="let event of events">
+      <div class="card h-100 shadow-sm">
+        <img [src]="event.imageUrl" 
+             class="card-img-top img-fluid" 
+             style="height: 200px; object-fit: cover;"
+             [alt]="event.titre">
+        <div class="card-body">
+          <h5 class="card-title">{{ event.titre | uppercase }}</h5>
+          <p class="text-muted">{{ event.lieu }}</p>
+          <p class="text-info">
+            <strong>Date:</strong> {{ event.date | date:'fullDate' }}
+          </p>
+          <p>{{ event.description }}</p>
+          <p><strong>Places disponibles:</strong> {{ event.nbPlaces }}</p>
+          <p class="fw-bold">Prix: {{ event.prix }} TND</p>
+          <p>👍 {{ event.nbrLikes }} likes</p>
+          
+          <div class="d-flex gap-2 flex-wrap mt-3">
+            <button class="btn btn-sm btn-warning" (click)="editEvent(event.id)">
+              Modifier
+            </button>
+            <button class="btn btn-sm btn-danger" (click)="deleteEvent(event.id)">
+              Supprimer
+            </button>
+            <button class="btn btn-sm btn-outline-primary" 
+                    [routerLink]="[event.id]">
+              Détails
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

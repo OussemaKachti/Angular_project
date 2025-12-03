@@ -50,11 +50,19 @@ public class EventController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteEvent(@PathVariable Long id) {
+        System.out.println("EventController: Received DELETE request for event id: " + id);
         try {
             eventService.deleteEvent(id);
+            System.out.println("EventController: Event " + id + " deleted successfully");
             return ResponseEntity.noContent().build();
-        } catch (Exception e) {
+        } catch (RuntimeException e) {
+            System.err.println("EventController: Error deleting event " + id + ": " + e.getMessage());
+            e.printStackTrace();
             return ResponseEntity.notFound().build();
+        } catch (Exception e) {
+            System.err.println("EventController: Unexpected error deleting event " + id + ": " + e.getMessage());
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
 
@@ -82,5 +90,11 @@ public class EventController {
         } catch (RuntimeException e) {
             return ResponseEntity.badRequest().body(null);
         }
+    }
+
+    @GetMapping("/organizer/{organisateurId}")
+    public ResponseEntity<List<Event>> getEventsByOrganizerId(@PathVariable Long organisateurId) {
+        List<Event> events = eventService.getEventsByOrganizerId(organisateurId);
+        return ResponseEntity.ok(events);
     }
 }

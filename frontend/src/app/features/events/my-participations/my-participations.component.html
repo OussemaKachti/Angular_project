@@ -1,0 +1,55 @@
+<div class="container py-4">
+  <h2 class="mb-4">Mes Participations</h2>
+
+  <div *ngIf="loading" class="text-center py-5">
+    <div class="spinner-border" role="status">
+      <span class="visually-hidden">Chargement...</span>
+    </div>
+  </div>
+
+  <div *ngIf="!loading && participations.length === 0" class="alert alert-info">
+    Vous n'avez pas encore participé à des événements.
+  </div>
+
+  <div class="row g-3" *ngIf="!loading && participations.length > 0">
+    <div class="col-md-6" *ngFor="let participation of participations">
+      <div class="card shadow-sm">
+        <div class="card-body">
+          <h5 class="card-title" *ngIf="participation.event">
+            {{ participation.event.titre }}
+          </h5>
+          <p class="text-muted" *ngIf="participation.event">
+            <strong>Lieu:</strong> {{ participation.event.lieu }}
+          </p>
+          <p class="text-info" *ngIf="participation.event">
+            <strong>Date:</strong> {{ participation.event.date | date:'fullDate' }}
+          </p>
+          <hr>
+          <p><strong>Email:</strong> {{ participation.email }}</p>
+          <p><strong>Nombre de places:</strong> {{ participation.seats }}</p>
+          <p class="fw-bold text-success">
+            <strong>Prix total:</strong> {{ participation.totalPrice | number:'1.0-2' }} TND
+          </p>
+          <p class="text-muted small">
+            <strong>Date de participation:</strong> {{ participation.createdAt | date:'fullDate' }}
+          </p>
+          
+          <button class="btn btn-sm btn-danger mt-3" 
+                  (click)="cancelParticipation(participation.id)"
+                  [disabled]="!participation.id || participation.id === participation.event?.id">
+            Annuler
+            <span *ngIf="participation.id === participation.event?.id" class="badge bg-warning ms-1">⚠️ ID incorrect</span>
+          </button>
+          
+          <!-- Debug info (visible seulement en développement) -->
+          <div class="text-muted small mt-2" *ngIf="false">
+            <p>ID Participation: {{ participation.id }}</p>
+            <p *ngIf="participation.event">ID Événement: {{ participation.event.id }}</p>
+            <p *ngIf="participation.id === participation.event?.id" class="text-danger">⚠️ ATTENTION: Les IDs sont identiques!</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

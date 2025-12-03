@@ -1,5 +1,18 @@
 <div class="container py-4">
-    <h2 class="mb-3">Liste des événements</h2>
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="mb-0">Liste des événements</h2>
+        <div class="d-flex gap-2">
+            <button class="btn btn-primary" routerLink="add">
+                + Ajouter un événement
+            </button>
+            <button class="btn btn-outline-primary" routerLink="my-events">
+                Mes événements
+            </button>
+            <button class="btn btn-outline-info" routerLink="my-participations">
+                Mes participations
+            </button>
+        </div>
+    </div>
 
     <!-- Recherche -->
     <input type="text" class="form-control mb-4"

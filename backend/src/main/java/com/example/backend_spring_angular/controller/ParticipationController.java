@@ -30,10 +30,18 @@ public class ParticipationController {
     public ResponseEntity<?> createParticipation(@PathVariable Long eventId,
                                                  @Valid @RequestBody ParticipationRequest request) {
         try {
+            System.out.println("Received participation request for eventId: " + eventId);
+            System.out.println("Request data: email=" + request.email() + ", seats=" + request.seats() + ", userId=" + request.userId());
             Participation participation = participationService.createParticipation(eventId, request);
+            System.out.println("Participation created successfully with id: " + participation.getId());
             return ResponseEntity.status(HttpStatus.CREATED).body(participation);
         } catch (IllegalArgumentException e) {
+            System.err.println("Error creating participation: " + e.getMessage());
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        } catch (Exception e) {
+            System.err.println("Unexpected error: " + e.getMessage());
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erreur serveur: " + e.getMessage());
         }
     }
 }
