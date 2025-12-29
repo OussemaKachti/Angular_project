@@ -1,0 +1,72 @@
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-md-6 col-lg-5">
+      <div class="card shadow">
+        <div class="card-body p-5">
+          <h2 class="card-title text-center mb-4">Connexion</h2>
+
+          <form [formGroup]="signinForm" (ngSubmit)="onSubmit()">
+            <!-- Email -->
+            <div class="mb-3">
+              <label for="email" class="form-label">Email</label>
+              <input
+                type="email"
+                class="form-control"
+                id="email"
+                formControlName="email"
+                [class.is-invalid]="email?.invalid && email?.touched"
+                placeholder="votre@email.com"
+              />
+              <div class="invalid-feedback" *ngIf="email?.invalid && email?.touched">
+                <div *ngIf="email?.errors?.['required']">L'email est requis</div>
+                <div *ngIf="email?.errors?.['email']">Format d'email invalide</div>
+              </div>
+            </div>
+
+            <!-- Password -->
+            <div class="mb-3">
+              <label for="password" class="form-label">Mot de passe</label>
+              <input
+                type="password"
+                class="form-control"
+                id="password"
+                formControlName="password"
+                [class.is-invalid]="password?.invalid && password?.touched"
+                placeholder="Mot de passe"
+              />
+              <div class="invalid-feedback" *ngIf="password?.invalid && password?.touched">
+                <div *ngIf="password?.errors?.['required']">Le mot de passe est requis</div>
+                <div *ngIf="password?.errors?.['minlength']">
+                  Le mot de passe doit contenir au moins 6 caractères
+                </div>
+              </div>
+            </div>
+
+            <!-- Error Message -->
+            <div class="alert alert-danger" *ngIf="errorMessage" role="alert">
+              {{ errorMessage }}
+            </div>
+
+            <!-- Submit Button -->
+            <button
+              type="submit"
+              class="btn btn-primary w-100 mb-3"
+              [disabled]="loading"
+            >
+              <span *ngIf="loading" class="spinner-border spinner-border-sm me-2"></span>
+              {{ loading ? 'Connexion...' : 'Se connecter' }}
+            </button>
+
+            <!-- Link to Signup -->
+            <div class="text-center">
+              <p class="mb-0">
+                Pas encore de compte ?
+                <a routerLink="/users/signup" class="text-decoration-none">S'inscrire</a>
+              </p>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,115 @@
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-md-6 col-lg-5">
+      <div class="card shadow">
+        <div class="card-body p-5">
+          <h2 class="card-title text-center mb-4">Inscription</h2>
+
+          <form [formGroup]="signupForm" (ngSubmit)="onSubmit()">
+            <!-- First Name -->
+            <div class="mb-3">
+              <label for="firstName" class="form-label">Prénom</label>
+              <input
+                type="text"
+                class="form-control"
+                id="firstName"
+                formControlName="firstName"
+                placeholder="Prénom"
+              />
+            </div>
+
+            <!-- Last Name -->
+            <div class="mb-3">
+              <label for="lastName" class="form-label">Nom</label>
+              <input
+                type="text"
+                class="form-control"
+                id="lastName"
+                formControlName="lastName"
+                placeholder="Nom"
+              />
+            </div>
+
+            <!-- Email -->
+            <div class="mb-3">
+              <label for="email" class="form-label">Email</label>
+              <input
+                type="email"
+                class="form-control"
+                id="email"
+                formControlName="email"
+                [class.is-invalid]="email?.invalid && email?.touched"
+                placeholder="votre@email.com"
+              />
+              <div class="invalid-feedback" *ngIf="email?.invalid && email?.touched">
+                <div *ngIf="email?.errors?.['required']">L'email est requis</div>
+                <div *ngIf="email?.errors?.['email']">Format d'email invalide</div>
+              </div>
+            </div>
+
+            <!-- Password -->
+            <div class="mb-3">
+              <label for="password" class="form-label">Mot de passe</label>
+              <input
+                type="password"
+                class="form-control"
+                id="password"
+                formControlName="password"
+                [class.is-invalid]="password?.invalid && password?.touched"
+                placeholder="Mot de passe"
+              />
+              <div class="invalid-feedback" *ngIf="password?.invalid && password?.touched">
+                <div *ngIf="password?.errors?.['required']">Le mot de passe est requis</div>
+                <div *ngIf="password?.errors?.['minlength']">
+                  Le mot de passe doit contenir au moins 6 caractères
+                </div>
+              </div>
+            </div>
+
+            <!-- Confirm Password -->
+            <div class="mb-3">
+              <label for="confirmPassword" class="form-label">Confirmer le mot de passe</label>
+              <input
+                type="password"
+                class="form-control"
+                id="confirmPassword"
+                formControlName="confirmPassword"
+                [class.is-invalid]="(confirmPassword?.invalid || signupForm.errors?.['passwordMismatch']) && confirmPassword?.touched"
+                placeholder="Confirmer le mot de passe"
+              />
+              <div class="invalid-feedback" *ngIf="(confirmPassword?.invalid || signupForm.errors?.['passwordMismatch']) && confirmPassword?.touched">
+                <div *ngIf="confirmPassword?.errors?.['required']">La confirmation du mot de passe est requise</div>
+                <div *ngIf="signupForm.errors?.['passwordMismatch'] || confirmPassword?.errors?.['passwordMismatch']">
+                  Les mots de passe ne correspondent pas
+                </div>
+              </div>
+            </div>
+
+            <!-- Error Message -->
+            <div class="alert alert-danger" *ngIf="errorMessage" role="alert">
+              {{ errorMessage }}
+            </div>
+
+            <!-- Submit Button -->
+            <button
+              type="submit"
+              class="btn btn-primary w-100 mb-3"
+              [disabled]="loading"
+            >
+              <span *ngIf="loading" class="spinner-border spinner-border-sm me-2"></span>
+              {{ loading ? 'Inscription...' : 'S\'inscrire' }}
+            </button>
+
+            <!-- Link to Signin -->
+            <div class="text-center">
+              <p class="mb-0">
+                Déjà un compte ?
+                <a routerLink="/users/signin" class="text-decoration-none">Se connecter</a>
+              </p>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

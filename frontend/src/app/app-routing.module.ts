@@ -8,6 +8,7 @@ const routes: Routes = [
   {path:'home' , component:HomeComponent},
     { path: 'events', loadChildren: () => import('./features/events/events.module').then(m => m.EventsModule) },
     { path: 'tickets', loadChildren: () => import('./features/tickets/tickets.module').then(m => m.TicketsModule) },
+    { path: 'users', loadChildren: () => import('./features/users/users.module').then(m => m.UsersModule) },
   // {path:'/:id',component:DetailEventComponent},
   {path:'**' , component:NotFoundComponent}
 

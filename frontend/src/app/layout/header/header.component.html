@@ -24,8 +24,19 @@
                 <li class="nav-item">
                     <a class="nav-link" routerLink="/feedback" hrefActive="active">Feedback</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" routerLink="/auth/login" hrefActive="active">Se connecter</a>
+                <li class="nav-item" *ngIf="!isAuthenticated">
+                    <a class="nav-link" routerLink="/users/signin" routerLinkActive="active">Se connecter</a>
+                </li>
+                <li class="nav-item dropdown" *ngIf="isAuthenticated">
+                    <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" 
+                       data-bs-toggle="dropdown" aria-expanded="false">
+                        {{ currentUser?.firstName || currentUser?.email }}
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+                        <li><a class="dropdown-item" href="#">{{ currentUser?.email }}</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item" (click)="logout()" style="cursor: pointer;">Déconnexion</a></li>
+                    </ul>
                 </li>
 
             </ul>
